@@ -1,12 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
-
-interface SignUpFormState  {
-    email: string;
-    password: string;
-    confirm_password: string
-
-  }
+import { SignUpFormState } from "../interfaces/SignUpFormState";
+import { apiRegistrationRequest } from "../api/apiAuthActions"
 
 const Register = () => {
 
@@ -17,21 +11,22 @@ const Register = () => {
       })
 
       
-    
       const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
         setFormData(prevData => ({...prevData, [name]: value}))
       }
+
     
       const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-          const response = await axios.post('http://localhost:8080/api/auth/registration', formData);
-          console.log(response); //Will result in an error because the above endpoint doesn't exist yet
+          const response = apiRegistrationRequest(formData);
+          console.log(response);
         }catch (error) {
           console.error(error);
         }
       }
+
     
       console.log(formData);
 
