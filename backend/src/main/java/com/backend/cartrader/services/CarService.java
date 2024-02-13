@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,5 +52,21 @@ public class CarService {
 
         return ResponseEntity.ok(new MessageResponse("New car created"));
 
+    }
+
+    public ResponseEntity<?> getMyCars() {
+
+        Optional<User> loggedInUser = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (loggedInUser.isEmpty()){
+            throw new AuthenticationException(ErrorCode.UNKNOWN_USER, "Internal error");
+        }
+
+        List<Car> userCars = carRepository.findAllByOwner(loggedInUser.get());
+
+        for (int i = 0; i < userCars.size(); i++) {
+            userCars.get(i).setOwner(null);
+        }
+
+        return ResponseEntity.ok(userCars);
     }
 }

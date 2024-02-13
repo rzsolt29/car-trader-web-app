@@ -28,4 +28,11 @@ public class CarController {
         return carService.createCar(request);
     }
 
+    @GetMapping("/my-cars")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get user's cars")
+    public ResponseEntity<?> getMyCars(){
+        return carService.getMyCars();
+    }
+
 }
