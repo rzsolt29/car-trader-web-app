@@ -44,7 +44,7 @@ public class AuthService {
     JwtUtils jwtUtils;
 
 
-    public ResponseEntity<?> createUser(SignupRequest signUpRequest) {
+    public ResponseEntity<MessageResponse> createUser(SignupRequest signUpRequest) {
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
@@ -74,7 +74,7 @@ public class AuthService {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    public ResponseEntity<?> authenticate(LoginRequest loginRequest) {
+    public ResponseEntity<JwtResponse> authenticate(LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));

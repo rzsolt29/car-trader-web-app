@@ -25,7 +25,7 @@ public class CarService {
 
     UserRepository userRepository;
 
-    public ResponseEntity<?> createCar(CreateCarRequest createCarRequest) {
+    public ResponseEntity<MessageResponse> createCar(CreateCarRequest createCarRequest) {
 
         Optional<User> loggedInUser = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         if (loggedInUser.isEmpty()){
@@ -54,7 +54,7 @@ public class CarService {
 
     }
 
-    public ResponseEntity<?> getMyCars() {
+    public ResponseEntity<List<Car>> getMyCars() {
 
         Optional<User> loggedInUser = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         if (loggedInUser.isEmpty()){
