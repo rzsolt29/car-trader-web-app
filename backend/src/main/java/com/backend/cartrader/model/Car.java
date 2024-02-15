@@ -58,7 +58,8 @@ public class Car {
     private Integer enginePower;
 
     @Size(max = 30)
-    private String drivetrain;
+    @Enumerated(EnumType.STRING)
+    private Drivetrain drivetrain;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner", nullable = false)

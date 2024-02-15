@@ -1,6 +1,7 @@
 package com.backend.cartrader.payload.request;
 
 import com.backend.cartrader.model.BodyType;
+import com.backend.cartrader.model.Drivetrain;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -43,5 +44,5 @@ public class CreateCarRequest {
     private Integer enginePower;
 
     @Size(max = 30)
-    private String drivetrain;
+    private Drivetrain drivetrain;
 }
