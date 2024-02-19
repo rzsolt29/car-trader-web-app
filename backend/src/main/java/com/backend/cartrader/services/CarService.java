@@ -9,6 +9,7 @@ import com.backend.cartrader.payload.response.MessageResponse;
 import com.backend.cartrader.repository.CarRepository;
 import com.backend.cartrader.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,7 @@ public class CarService {
 
         carRepository.save(newCar);
 
-        return ResponseEntity.ok(new MessageResponse("New car created"));
+        return new ResponseEntity<>(new MessageResponse("New car created"), HttpStatus.CREATED);
 
     }
 

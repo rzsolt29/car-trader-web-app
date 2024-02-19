@@ -14,6 +14,7 @@ import com.backend.cartrader.repository.RoleRepository;
 import com.backend.cartrader.repository.UserRepository;
 import com.backend.cartrader.repository.UserRolesRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -71,7 +72,7 @@ public class AuthService {
             userRolesRepository.save(newUserRole);
         }
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return new ResponseEntity<>(new MessageResponse("User registered successfully!"), HttpStatus.CREATED);
     }
 
     public ResponseEntity<JwtResponse> authenticate(LoginRequest loginRequest) {
