@@ -61,7 +61,7 @@ public class Car {
     @Enumerated(EnumType.STRING)
     private Drivetrain drivetrain;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner", nullable = false)
     private User owner;
 

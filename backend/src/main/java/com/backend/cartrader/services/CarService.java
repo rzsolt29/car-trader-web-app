@@ -2,6 +2,7 @@ package com.backend.cartrader.services;
 
 import com.backend.cartrader.error.ErrorCode;
 import com.backend.cartrader.exception.AuthenticationException;
+import com.backend.cartrader.exception.NonExistingCarException;
 import com.backend.cartrader.model.Car;
 import com.backend.cartrader.model.User;
 import com.backend.cartrader.payload.request.CreateCarRequest;
@@ -69,5 +70,21 @@ public class CarService {
         }
 
         return ResponseEntity.ok(userCars);
+    }
+
+    public Car getCar(Integer id) {
+
+        Optional<Car> car = carRepository.findById(id);
+
+        if (car.isEmpty()){
+            throw new NonExistingCarException(ErrorCode.INVALID_CAR_ID, "Car not found with given id");
+        }
+        else {
+            User owner = car.get().getOwner();
+            owner.setPassword(null);
+            car.get().setOwner(owner);
+
+            return car.get();
+        }
     }
 }
