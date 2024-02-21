@@ -64,8 +64,8 @@ public class CarService {
 
         List<Car> userCars = carRepository.findAllByOwner(loggedInUser.get());
 
-        for (int i = 0; i < userCars.size(); i++) {
-            userCars.get(i).setOwner(null);
+        for (Car userCar : userCars) {
+            userCar.setOwner(null);
         }
 
         return ResponseEntity.ok(userCars);
