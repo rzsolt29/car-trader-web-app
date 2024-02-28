@@ -97,11 +97,11 @@ public class CarService {
 
         GenericSpesification<Car> genericSpesification = new GenericSpesification<>();
 
-        if (request.getMake() != null) {
+        if (request.getMake() != null && !request.getMake().isBlank()) {
             genericSpesification.add(new SearchCriteria("make", request.getMake(), SearchOperation.EQUAL));
         }
 
-        if (request.getModel() != null) {
+        if (request.getModel() != null && !request.getModel().isBlank()) {
             genericSpesification.add(new SearchCriteria("model", request.getModel(), SearchOperation.EQUAL));
         }
 
@@ -117,11 +117,11 @@ public class CarService {
             genericSpesification.add(new SearchCriteria("bodyType", request.getBodyType(), SearchOperation.EQUAL));
         }
 
-        if (request.getGearbox() != null) {
+        if (request.getGearbox() != null && !request.getGearbox().isBlank()) {
             genericSpesification.add(new SearchCriteria("gearbox", request.getGearbox(), SearchOperation.EQUAL));
         }
 
-        if (request.getFuelType() != null) {
+        if (request.getFuelType() != null && !request.getFuelType().isBlank()) {
             genericSpesification.add(new SearchCriteria("fuelType", request.getFuelType(), SearchOperation.EQUAL));
         }
 
@@ -133,7 +133,7 @@ public class CarService {
             genericSpesification.add(new SearchCriteria("productionYear", request.getProductionYearTo(), SearchOperation.LESS_THAN_EQUAL));
         }
 
-        if (request.getColour() != null) {
+        if (request.getColour() != null && !request.getColour().isBlank()) {
             genericSpesification.add(new SearchCriteria("colour", request.getColour(), SearchOperation.EQUAL));
         }
 
