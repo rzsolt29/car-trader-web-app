@@ -3,6 +3,7 @@ package com.backend.cartrader.controllers;
 import com.backend.cartrader.exception.NonExistingCarException;
 import com.backend.cartrader.model.Car;
 import com.backend.cartrader.payload.request.CreateCarRequest;
+import com.backend.cartrader.payload.request.SearchForCarRequest;
 import com.backend.cartrader.payload.response.ExceptionResponse;
 import com.backend.cartrader.payload.response.MessageResponse;
 import com.backend.cartrader.services.CarService;
@@ -52,4 +53,10 @@ public class CarController {
             return new ResponseEntity<>(new ExceptionResponse(400, e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/search")
+    @Operation(summary = "Get cars by parameters")
+    public ResponseEntity<List<Car>> getCarsByParameters(@RequestBody @Valid SearchForCarRequest request) {
+        return carService.getCarsByParameters(request);
+    }
+
 }

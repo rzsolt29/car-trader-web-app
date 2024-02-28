@@ -1,5 +1,6 @@
 package com.backend.cartrader.model;
 
+import com.backend.cartrader.config.validation.EnumNamePattern;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "cars")
 public class Car {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -31,9 +33,9 @@ public class Car {
 
     private Integer price;
 
-    @Size(max = 15)
     @Column(name = "body_type")
     @Enumerated(EnumType.STRING)
+    @EnumNamePattern(regexp = "CONVERTIBLE|COUPE|ESTATE|HATCHBACK|MPV|PICKUP|SALOON|SUV")
     private BodyType bodyType;
 
     @Size(max = 15)
@@ -57,8 +59,8 @@ public class Car {
     @Column(name = "engine_power")
     private Integer enginePower;
 
-    @Size(max = 30)
     @Enumerated(EnumType.STRING)
+    @EnumNamePattern(regexp = "DRIVETRAIN_FWD|DRIVETRAIN_RWD|DRIVETRAIN_AWD|DRIVETRAIN_4WD")
     private Drivetrain drivetrain;
 
     @ManyToOne(fetch = FetchType.EAGER)

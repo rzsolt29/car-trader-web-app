@@ -3,7 +3,6 @@ package com.backend.cartrader.payload.request;
 import com.backend.cartrader.config.validation.EnumNamePattern;
 import com.backend.cartrader.model.BodyType;
 import com.backend.cartrader.model.Drivetrain;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,15 +13,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCarRequest {
-    @NotBlank
+public class SearchForCarRequest {
+
     @Size(max = 45)
     private String make;
 
     @Size(max = 60)
     private String model;
 
-    private Integer price;
+    private Integer priceFrom;
+
+    private Integer priceTo;
 
     @EnumNamePattern(regexp = "CONVERTIBLE|COUPE|ESTATE|HATCHBACK|MPV|PICKUP|SALOON|SUV")
     private BodyType bodyType;
@@ -33,16 +34,22 @@ public class CreateCarRequest {
     @Size(max = 15)
     private String fuelType;
 
-    private Integer productionYear;
+    private Integer productionYearFrom;
+
+    private Integer productionYearTo;
 
     @Size(max = 30)
     private String colour;
 
     private Integer doors;
 
-    private Integer engineSize;
+    private Integer engineSizeFrom;
 
-    private Integer enginePower;
+    private Integer engineSizeTo;
+
+    private Integer enginePowerFrom;
+
+    private Integer enginePowerTo;
 
     @EnumNamePattern(regexp = "DRIVETRAIN_FWD|DRIVETRAIN_RWD|DRIVETRAIN_AWD|DRIVETRAIN_4WD")
     private Drivetrain drivetrain;
