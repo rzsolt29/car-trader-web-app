@@ -2,8 +2,11 @@ package com.backend.cartrader.services;
 
 import com.backend.cartrader.error.ErrorCode;
 import com.backend.cartrader.exception.AuthenticationException;
+import com.backend.cartrader.exception.AuthorizationException;
 import com.backend.cartrader.exception.NonExistingCarException;
 import com.backend.cartrader.model.Car;
+import com.backend.cartrader.model.ERole;
+import com.backend.cartrader.model.Role;
 import com.backend.cartrader.model.User;
 import com.backend.cartrader.payload.request.CreateCarRequest;
 import com.backend.cartrader.payload.request.SearchForCarRequest;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -170,5 +174,33 @@ public class CarService {
         }
 
         return ResponseEntity.ok(foundCars);
+    }
+
+    public ResponseEntity<MessageResponse> deleteCar(Integer carId) {
+        Optional<User> loggedInUser = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (loggedInUser.isEmpty()){
+            throw new AuthenticationException(ErrorCode.UNKNOWN_USER, "Internal error");
+        }
+
+        if (loggedInUser.get().getRoles().contains(new Role(2, ERole.ROLE_ADMIN))) {
+
+            carRepository.deleteById(carId);
+
+        }else if (loggedInUser.get().getRoles().contains(new Role(1, ERole.ROLE_USER))) {
+
+            Optional<Car> car = carRepository.findById(carId);
+
+            if (car.isEmpty()) {
+                throw new NonExistingCarException(ErrorCode.INVALID_CAR_ID, "Car not found with given id");
+            }
+
+            if (Objects.equals(car.get().getOwner().getId(), loggedInUser.get().getId())) {
+                carRepository.deleteById(carId);
+            }else {
+                throw new AuthorizationException(ErrorCode.CAR_BELONGS_TO_DIFFERENT_USER, "Car with given id does not belongs to logged in user");
+            }
+        }
+
+        return ResponseEntity.ok(new MessageResponse("Car deleted successfully"));
     }
 }

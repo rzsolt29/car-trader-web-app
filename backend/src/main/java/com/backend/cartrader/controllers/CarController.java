@@ -1,5 +1,6 @@
 package com.backend.cartrader.controllers;
 
+import com.backend.cartrader.exception.AuthorizationException;
 import com.backend.cartrader.exception.NonExistingCarException;
 import com.backend.cartrader.model.Car;
 import com.backend.cartrader.payload.request.CreateCarRequest;
@@ -57,6 +58,21 @@ public class CarController {
     @Operation(summary = "Get cars by parameters")
     public ResponseEntity<List<Car>> getCarsByParameters(@RequestBody @Valid SearchForCarRequest request) {
         return carService.getCarsByParameters(request);
+    }
+
+    @DeleteMapping("/{carId}")
+    @Operation(summary = "Delete car by id")
+    public ResponseEntity<?> deleteCar(@PathVariable Integer carId) {
+
+        try {
+
+            return carService.deleteCar(carId);
+
+        }catch (NonExistingCarException e) {
+            return new ResponseEntity<>(new ExceptionResponse(400, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }catch (AuthorizationException e) {
+            return new ResponseEntity<>(new ExceptionResponse(403, e.getMessage()), HttpStatus.FORBIDDEN);
+        }
     }
 
 }

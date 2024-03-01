@@ -13,7 +13,8 @@ public enum ErrorCode {
     INVALID_TOKEN(ErrorType.AUTHORIZATION, HttpStatus.FORBIDDEN),
     NON_EXISTING_EMAIL(ErrorType.VALIDATION, HttpStatus.NOT_FOUND),
     TOO_MANY_REQUESTS(ErrorType.VALIDATION, HttpStatus.TOO_MANY_REQUESTS),
-    INVALID_CAR_ID(ErrorType.VALIDATION, HttpStatus.BAD_REQUEST);
+    INVALID_CAR_ID(ErrorType.VALIDATION, HttpStatus.BAD_REQUEST),
+    CAR_BELONGS_TO_DIFFERENT_USER(ErrorType.AUTHORIZATION, HttpStatus.FORBIDDEN);
 
     private final ErrorType errorType;
 
