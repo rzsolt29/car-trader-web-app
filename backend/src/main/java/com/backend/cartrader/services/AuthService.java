@@ -2,14 +2,14 @@ package com.backend.cartrader.services;
 
 import com.backend.cartrader.config.security.jwt.JwtUtils;
 import com.backend.cartrader.config.security.services.UserDetailsImpl;
-import com.backend.cartrader.model.ERole;
-import com.backend.cartrader.model.Role;
-import com.backend.cartrader.model.User;
-import com.backend.cartrader.model.UserRole;
+import com.backend.cartrader.error.ErrorCode;
+import com.backend.cartrader.exception.AuthenticationException;
+import com.backend.cartrader.model.*;
 import com.backend.cartrader.payload.request.LoginRequest;
 import com.backend.cartrader.payload.request.SignupRequest;
 import com.backend.cartrader.payload.response.JwtResponse;
 import com.backend.cartrader.payload.response.MessageResponse;
+import com.backend.cartrader.repository.CarRepository;
 import com.backend.cartrader.repository.RoleRepository;
 import com.backend.cartrader.repository.UserRepository;
 import com.backend.cartrader.repository.UserRolesRepository;
@@ -39,6 +39,8 @@ public class AuthService {
     RoleRepository roleRepository;
 
     UserRolesRepository userRolesRepository;
+
+    CarRepository carRepository;
 
     PasswordEncoder encoder;
 
@@ -92,5 +94,29 @@ public class AuthService {
                 userDetails.getId(),
                 userDetails.getEmail(),
                 roles));
+    }
+
+    public ResponseEntity<?> deleteUser() {
+
+        Optional<User> loggedInUser = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (loggedInUser.isEmpty()){
+            throw new AuthenticationException(ErrorCode.UNKNOWN_USER, "Internal error");
+        }
+
+        List<Car> carsOfLoggedInUser = carRepository.findAllByOwner(loggedInUser.get());
+
+        for (var car : carsOfLoggedInUser) {
+            carRepository.delete(car);
+        }
+
+        List<UserRole> rolesOfLoggedInUser = userRolesRepository.findAllByUserId(loggedInUser.get().getId());
+
+        for (var roleOfLoggedInUser : rolesOfLoggedInUser) {
+            userRolesRepository.delete(roleOfLoggedInUser);
+        }
+
+        userRepository.deleteById(loggedInUser.get().getId());
+
+        return ResponseEntity.ok(new MessageResponse("User deleted successfully"));
     }
 }
