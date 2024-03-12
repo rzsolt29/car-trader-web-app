@@ -36,12 +36,20 @@ public class CarService {
 
     UserRepository userRepository;
 
-    public ResponseEntity<MessageResponse> createCar(CreateCarRequest createCarRequest) {
-
+    User getLoggedInUser() {
         Optional<User> loggedInUser = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+
         if (loggedInUser.isEmpty()){
             throw new AuthenticationException(ErrorCode.UNKNOWN_USER, "Internal error");
         }
+
+        return loggedInUser.get();
+    }
+
+    public ResponseEntity<MessageResponse> createCar(CreateCarRequest createCarRequest) {
+
+        User loggedInUser = getLoggedInUser();
+
         Car newCar = Car.builder()
                 .publishedOn(Instant.now())
                 .make(createCarRequest.getMake())
@@ -56,7 +64,7 @@ public class CarService {
                 .engineSize(createCarRequest.getEngineSize())
                 .enginePower(createCarRequest.getEnginePower())
                 .drivetrain(createCarRequest.getDrivetrain())
-                .owner(loggedInUser.get())
+                .owner(loggedInUser)
                 .build();
 
         carRepository.save(newCar);
@@ -67,12 +75,9 @@ public class CarService {
 
     public ResponseEntity<List<Car>> getMyCars() {
 
-        Optional<User> loggedInUser = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        if (loggedInUser.isEmpty()){
-            throw new AuthenticationException(ErrorCode.UNKNOWN_USER, "Internal error");
-        }
+        User loggedInUser = getLoggedInUser();
 
-        List<Car> userCars = carRepository.findAllByOwner(loggedInUser.get());
+        List<Car> userCars = carRepository.findAllByOwner(loggedInUser);
 
         for (Car userCar : userCars) {
             userCar.setOwner(null);
@@ -177,16 +182,14 @@ public class CarService {
     }
 
     public ResponseEntity<MessageResponse> deleteCar(Integer carId) {
-        Optional<User> loggedInUser = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        if (loggedInUser.isEmpty()){
-            throw new AuthenticationException(ErrorCode.UNKNOWN_USER, "Internal error");
-        }
 
-        if (loggedInUser.get().getRoles().contains(new Role(2, ERole.ROLE_ADMIN))) {
+        User loggedInUser = getLoggedInUser();
+
+        if (loggedInUser.getRoles().contains(new Role(2, ERole.ROLE_ADMIN))) {
 
             carRepository.deleteById(carId);
 
-        }else if (loggedInUser.get().getRoles().contains(new Role(1, ERole.ROLE_USER))) {
+        }else if (loggedInUser.getRoles().contains(new Role(1, ERole.ROLE_USER))) {
 
             Optional<Car> car = carRepository.findById(carId);
 
@@ -194,7 +197,7 @@ public class CarService {
                 throw new NonExistingCarException(ErrorCode.INVALID_CAR_ID, "Car not found with given id");
             }
 
-            if (Objects.equals(car.get().getOwner().getId(), loggedInUser.get().getId())) {
+            if (Objects.equals(car.get().getOwner().getId(), loggedInUser.getId())) {
                 carRepository.deleteById(carId);
             }else {
                 throw new AuthorizationException(ErrorCode.CAR_BELONGS_TO_DIFFERENT_USER, "Car with given id does not belongs to logged in user");
