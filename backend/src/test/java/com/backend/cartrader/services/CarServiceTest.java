@@ -1,6 +1,7 @@
 package com.backend.cartrader.services;
 
 import com.backend.cartrader.exception.AuthenticationException;
+import com.backend.cartrader.exception.NonExistingCarException;
 import com.backend.cartrader.model.BodyType;
 import com.backend.cartrader.model.Car;
 import com.backend.cartrader.model.Drivetrain;
@@ -127,8 +128,69 @@ class CarServiceTest {
     }
 
     @Test
-    @Disabled
     void canGetCarById() {
+        //given
+        var time = Instant.now();
+        given(carRepository.findById(1)).willReturn(Optional.of(Car.builder()
+                .id(1)
+                .publishedOn(time)
+                .make("BMW")
+                .model("3")
+                .price(1000)
+                .bodyType(BodyType.SALOON)
+                .gearbox("Automatic")
+                .fuelType("Diesel")
+                .productionYear(2003)
+                .colour("Black")
+                .doors(5)
+                .engineSize(1995)
+                .enginePower(110)
+                .drivetrain(Drivetrain.DRIVETRAIN_RWD)
+                .owner(User.builder()
+                        .email("fr0d0@gmail.com")
+                        .password("Fr0d0's_secret")
+                        .createdOn(time)
+                        .build())
+                .build()));
+
+        //when
+        //then
+        Car expected = Car.builder()
+                .id(1)
+                .publishedOn(time)
+                .make("BMW")
+                .model("3")
+                .price(1000)
+                .bodyType(BodyType.SALOON)
+                .gearbox("Automatic")
+                .fuelType("Diesel")
+                .productionYear(2003)
+                .colour("Black")
+                .doors(5)
+                .engineSize(1995)
+                .enginePower(110)
+                .drivetrain(Drivetrain.DRIVETRAIN_RWD)
+                .owner(User.builder()
+                        .email("fr0d0@gmail.com")
+                        .password(null)
+                        .createdOn(time)
+                        .build())
+                .build();
+
+        Car actual = underTest.getCar(1);
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void getCarByInvalidIdThrowsException() {
+        //given
+        given(carRepository.findById(1)).willReturn(Optional.empty());
+        //when
+        //then
+        assertThatThrownBy(() -> underTest.getCar(1))
+                .isInstanceOf(NonExistingCarException.class)
+                .hasMessageContaining("Car not found with given id");
     }
 
     @Test
