@@ -185,17 +185,17 @@ public class CarService {
 
         User loggedInUser = getLoggedInUser();
 
+        Optional<Car> car = carRepository.findById(carId);
+
+        if (car.isEmpty()) {
+            throw new NonExistingCarException(ErrorCode.INVALID_CAR_ID, "Car not found with given id");
+        }
+
         if (loggedInUser.getRoles().contains(new Role(2, ERole.ROLE_ADMIN))) {
 
             carRepository.deleteById(carId);
 
         }else if (loggedInUser.getRoles().contains(new Role(1, ERole.ROLE_USER))) {
-
-            Optional<Car> car = carRepository.findById(carId);
-
-            if (car.isEmpty()) {
-                throw new NonExistingCarException(ErrorCode.INVALID_CAR_ID, "Car not found with given id");
-            }
 
             if (Objects.equals(car.get().getOwner().getId(), loggedInUser.getId())) {
                 carRepository.deleteById(carId);
