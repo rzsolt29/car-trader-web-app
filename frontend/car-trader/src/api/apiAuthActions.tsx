@@ -20,3 +20,14 @@ export const apiRegistrationRequest = async (params: any = {}) => {
     return e;
   }
 };
+
+export const apiLoginRequest = async (params: any = {}) => {
+  try {
+    return await apiClient.post(`${apiAuthUrl}/login`, params, HEADERS);
+  } catch (e: any) {
+    if (axios.isAxiosError(e)) {
+      return e.response?.data;
+    }
+    return e;
+  }
+};
