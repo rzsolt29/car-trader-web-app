@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { SignInFormState } from "../interfaces/SignInFormState";
 import { apiLoginRequest } from "../api/apiAuthActions"
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     
@@ -15,13 +16,17 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   setFormData(prevData => ({...prevData, [name]: value}))
 }
 
+const navigate = useNavigate();
 
 const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
 
       const response = apiLoginRequest(formData);
-      console.log(response);
+
+      if ((await response).status === 200){
+        navigate("/");
+      }
 
     }catch (error) {
       console.error(error);
