@@ -1,0 +1,12 @@
+.navbar-brand {
+    float: left;
+    font-size: 35px;
+    line-height: 30px;
+    margin-left: 5px;
+}
+.navbar-right {
+    float: right;
+    font-size: 30px;
+    line-height: 30px;
+    margin-right: 5px;
+}

@@ -1,13 +1,14 @@
 import React from "react";
+import "./Home.css"
 
 const Home = () => {
     return (
-        <body>
-            <section>
-            <a className="home-link" href="/" ><h1>Home</h1></a>
-            <a className="account-link" href="/login" >Acc</a>
-            </section>
-        </body>
+        <div>
+            <header>
+            <a className="navbar-brand" href="/" >Home</a>
+            <a className="navbar-right" href="/login" >Account</a>
+            </header>
+        </div>
     )
 }
 
