@@ -36,6 +36,9 @@ const Register = () => {
 
     return (
         <div className="register">
+          <section>
+            <a href="/" ><h1>Home</h1></a>
+          </section>
       <form onSubmit={handleSubmit}>
 
         <div>

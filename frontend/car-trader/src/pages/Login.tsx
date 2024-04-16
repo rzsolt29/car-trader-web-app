@@ -38,6 +38,9 @@ console.log(formData);
 
 return (
     <div className="login">
+      <section>
+        <a href="/" ><h1>Home</h1></a>
+      </section>
   <form onSubmit={handleSubmit}>
 
     <div>
@@ -55,6 +58,8 @@ return (
     </div>
 
     <button type="submit">Sign Up</button>
+    <br />
+    <a href="/register" >Create new account</a>
 
   </form>
 </div>
