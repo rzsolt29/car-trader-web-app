@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { SignInFormState } from "../interfaces/SignInFormState";
 import { apiLoginRequest } from "../api/apiAuthActions"
 import { useNavigate } from "react-router-dom";
+import "./Navbar.css";
 
 const Login = () => {
     
@@ -38,9 +39,14 @@ console.log(formData);
 
 return (
     <div className="login">
-      <section>
-        <a href="/" ><h1>Home</h1></a>
-      </section>
+      <header>
+                <a className="brand" href="/" >Home</a>   
+            <nav>
+                <ul>
+                    <li><a href="/login" >Account</a></li>
+                </ul>
+            </nav>
+            </header>
   <form onSubmit={handleSubmit}>
 
     <div>

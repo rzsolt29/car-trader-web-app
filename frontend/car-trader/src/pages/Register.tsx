@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { SignUpFormState } from "../interfaces/SignUpFormState";
-import { apiRegistrationRequest } from "../api/apiAuthActions"
+import { apiRegistrationRequest } from "../api/apiAuthActions";
+import "./Navbar.css";
 
 const Register = () => {
 
@@ -36,9 +37,14 @@ const Register = () => {
 
     return (
         <div className="register">
-          <section>
-            <a href="/" ><h1>Home</h1></a>
-          </section>
+          <header>
+                <a className="brand" href="/" >Home</a>   
+            <nav>
+                <ul>
+                    <li><a href="/login" >Account</a></li>
+                </ul>
+            </nav>
+            </header>
       <form onSubmit={handleSubmit}>
 
         <div>
