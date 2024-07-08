@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { SignInFormState } from "../interfaces/SignInFormState";
 import { apiLoginRequest } from "../api/apiAuthActions"
 import { useNavigate } from "react-router-dom";
+import { Navbar } from "../utils/Navbar";
 import "./Navbar.css";
 
 const Login = () => {
@@ -40,14 +41,9 @@ console.log(formData);
 return (
     <div className="login">
       <header>
-                <a className="brand" href="/" >Home</a>   
-            <nav>
-                <ul>
-                    <li><a href="/login" >Account</a></li>
-                </ul>
-            </nav>
-            </header>
-  <form onSubmit={handleSubmit}>
+        <Navbar />
+      </header>
+    <form onSubmit={handleSubmit}>
 
     <div>
       <label htmlFor="email">Email:</label> 
