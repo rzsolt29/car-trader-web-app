@@ -27,6 +27,7 @@ const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
       const response = apiLoginRequest(formData);
 
       if ((await response).status === 200){
+        
         navigate("/");
       }
 
