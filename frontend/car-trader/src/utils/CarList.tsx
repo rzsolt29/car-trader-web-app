@@ -12,6 +12,12 @@
 
 export const CarList = (items: CarListProps) => {
     
+    if (items.cars.length === 0) {
+      return (
+        <h2>You have no cars for sale</h2>    
+    )
+    }
+
     return (
             <ul>
             {items.cars.map(car => (

@@ -14,12 +14,13 @@ const Profile = () => {
         price: number;
     }
     const [cars, setCarList] = useState<Car[]>([]);
+    const [carListRequested, setCarListRequested] = useState(false);
 
 
-    // TODO handle infinit loop when user does not have any car
-    if (cars.length === 0) {
-        const response = apiGetUsersCarsRequest();
-
+    var response = null;
+    if (!carListRequested) {
+        response = apiGetUsersCarsRequest();
+        setCarListRequested(true);
         console.log(response);
 
     response
