@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { DeleteJwtCookie } from "../utils/DeleteJwtCookie";
-import Cookies from 'universal-cookie';
-import { boolean } from "yup";
+import "./Logout.css";
 
-const cookies = new Cookies();
 
 const Logout = () => {
 
@@ -18,10 +16,9 @@ const Logout = () => {
 return (
     <div className="logout">
         <DeleteJwtCookie/>
-        Logged out
+        <h1>Logged out</h1>
         <button className="backToHome" onClick={() => navigate("/")}> Back to main page</button>
     </div>
-    
 )
 }
 

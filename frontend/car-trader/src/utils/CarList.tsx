@@ -25,6 +25,7 @@ export const CarList = (items: CarListProps) => {
             {items.cars.map(car => (
                 <li className="tile" key={car.id}>
                     <span>{car.make}</span>
+                    <div>{car.model}</div>
                     <div>{car.price}</div>
                 </li>
             ))}
