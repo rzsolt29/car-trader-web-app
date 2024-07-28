@@ -1,3 +1,5 @@
+import "./CarList.css";
+  
   interface Car {
     id: number;
     publishedOn: any;
@@ -19,10 +21,11 @@ export const CarList = (items: CarListProps) => {
     }
 
     return (
-            <ul>
+            <ul className="tiles-container">
             {items.cars.map(car => (
-                <li key={car.id}>
+                <li className="tile" key={car.id}>
                     <span>{car.make}</span>
+                    <div>{car.price}</div>
                 </li>
             ))}
             </ul>

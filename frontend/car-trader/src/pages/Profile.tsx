@@ -23,10 +23,10 @@ const Profile = () => {
         setCarListRequested(true);
         console.log(response);
 
-    response
-    .then((result) => {
-      setCarList(result.data);
-    })
+        response
+        .then((result) => {
+            setCarList(result.data);
+        })
     }
 
 
@@ -36,7 +36,6 @@ const Profile = () => {
                 <Navbar />
             </header>
             <section>
-                <h2>profile page</h2>
                 <CarList cars={cars} />
             </section>
         </div>
