@@ -1,5 +1,8 @@
 import axios from "axios";
+import { log } from "console";
 import Cookies from 'universal-cookie';
+import { RegistrationError } from "../utils/RegistrationError";
+
 
 const HEADERS = {
     headers: {
@@ -15,9 +18,11 @@ const apiClient = axios.create();
 export const apiRegistrationRequest = async (params: any = {}) => {
   try {
     return await apiClient.post(`${apiAuthUrl}/registration`, params, HEADERS);
+
   } catch (e: any) {
     if (axios.isAxiosError(e)) {
-      return e.response?.data;
+      console.error(e.response?.data);
+      throw new RegistrationError({name: 'Email is already taken', message: e.response?.data});
     }
     return e;
   }

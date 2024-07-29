@@ -3,6 +3,8 @@ import { SignUpFormState } from "../interfaces/SignUpFormState";
 import { apiRegistrationRequest } from "../api/apiAuthActions";
 import { Navbar } from "../utils/Navbar";
 import "./Navbar.css";
+import "./Register.css";
+import { RegistrationError } from "../utils/RegistrationError";
 
 const Register = () => {
 
@@ -11,6 +13,14 @@ const Register = () => {
         password: '',
         confirm_password: ''
       })
+
+      enum ERegistrationStatus {
+        pending = 0,
+        success = 1,
+        error = 2
+      }
+
+      const [registrationStatus, setRegistrationStatus] = useState<ERegistrationStatus>(ERegistrationStatus.pending)
 
       
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,46 +35,47 @@ const Register = () => {
           if (formData.password !== formData.confirm_password) {
             throw new Error("Password and confirm password must be the same");
           }
-          const response = apiRegistrationRequest(formData);
-          console.log(response);
+          apiRegistrationRequest(formData).catch((e: RegistrationError) => setRegistrationStatus(ERegistrationStatus.error));
+          setRegistrationStatus(ERegistrationStatus.success);
 
-        }catch (error) {
-          console.error(error);
+        }catch (error: any) {
+          setRegistrationStatus(ERegistrationStatus.error);
         }
       }
 
-    
-    console.log(formData);
 
     return (
         <div className="register">
           <header>
               <Navbar />
           </header>
-      <form onSubmit={handleSubmit}>
+      <form className="registrationForm" onSubmit={handleSubmit}>
 
+        <div className="RegistrationHeader">Create Account</div>
         <div>
-          <label htmlFor="email">Email:</label> 
+          <label className="fieldText" htmlFor="email">Email:</label> 
           <br />
-          <input type="email" name="email" id="email" onChange={handleChange} value={formData.email} required maxLength={45} />
+          <input className="inputField"type="email" name="email" id="email" onChange={handleChange} value={formData.email} required maxLength={45} />
           <br />
         </div>
 
         <div>
-          <label htmlFor="password">Password:</label> 
+          <label className="fieldText" htmlFor="password">Password:</label> 
           <br />
-          <input type="password" name="password" id="password" onChange={handleChange} value={formData.password} required maxLength={60} />
+          <input className="inputField" type="password" name="password" id="password" onChange={handleChange} value={formData.password} required maxLength={60} />
           <br />
         </div>
 
         <div>
-          <label htmlFor="confirm_password">Confirm password:</label> 
+          <label className="fieldText" htmlFor="confirm_password">Confirm password:</label> 
           <br />
-          <input type="password" name="confirm_password" id="confirm_password" onChange={handleChange} value={formData.confirm_password} required maxLength={60} />
+          <input className="inputField" type="password" name="confirm_password" id="confirm_password" onChange={handleChange} value={formData.confirm_password} required maxLength={60} />
           <br />
         </div>
 
-        <button type="submit">Sign Up</button>
+        <button className="submitBtn" type="submit">Sign Up</button>
+        {registrationStatus === ERegistrationStatus.success && <p>Registration successful</p>}
+        {registrationStatus === ERegistrationStatus.error && <p>Registration error</p>}
 
       </form>
     </div>
