@@ -26,7 +26,7 @@ export const CarList = (items: CarListProps) => {
                 <li className="tile" key={car.id}>
                     <span>{car.make}</span>
                     <div>{car.model}</div>
-                    <div>{car.price}</div>
+                    { car.price != null ? <div>HUF {car.price}</div> : null}
                 </li>
             ))}
             </ul>
